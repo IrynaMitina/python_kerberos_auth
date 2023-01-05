@@ -1,0 +1,10 @@
+**/.spyproject
+**/*.pyc
+**/.idea
+**/.DS_Store
+**/__pycache__
+**/.cache
+
+# Unit test / coverage reports
+**/.coverage
+**/htmlcov

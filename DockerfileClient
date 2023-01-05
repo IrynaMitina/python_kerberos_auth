@@ -1,0 +1,18 @@
+FROM centos:7
+
+#kerberos packages
+RUN	yum install -y -q krb5-libs krb5-workstation
+
+#client dependencies
+#for python kerberos: krb5-devel gcc
+RUN yum install -y -q python3 python3-devel python3-pip
+RUN yum install -y -q krb5-devel gcc
+
+RUN pip3 -q install requests
+RUN pip3 -q install kerberos
+
+ADD requests_kerberos.py /requests_kerberos.py
+
+#config for kinit
+ADD	krb5.conf /etc/krb5.conf
+

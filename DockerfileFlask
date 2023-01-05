@@ -1,0 +1,23 @@
+FROM centos:7
+
+#kerberos packages
+RUN	yum install -y -q krb5-libs krb5-workstation
+
+EXPOSE	5555
+
+#flask app dependencies
+#for python kerberos: krb5-devel gcc
+RUN yum install -y -q python3 python3-devel python3-pip
+RUN yum install -y -q krb5-devel gcc
+
+RUN pip3 -q install flask
+RUN pip3 -q install kerberos
+
+#config for kadmin (to create service' principal and save its secret key in keytab)
+ADD	krb5.conf /etc/krb5.conf
+
+ADD flask_kerberos.py /flask_kerberos.py
+ADD	app_flask.py /app_flask.py
+ADD setup_flask_service.sh /setup_flask_service.sh
+
+CMD ["bash", "/setup_flask_service.sh"]

@@ -1,0 +1,17 @@
+FROM centos:7
+
+#kerberos packages
+RUN	yum install -y -q krb5-libs krb5-server krb5-workstation
+
+EXPOSE	88
+EXPOSE	749
+
+ADD	krb5.conf /etc/krb5.conf
+ADD	kdc.conf /var/kerberos/krb5kdc/kdc.conf
+
+#all */admin principals in realm HOME.ORG.AU have all privileges
+RUN	echo "*/admin@HOME.ORG.AU     *" > /var/kerberos/krb5kdc/kadm5.acl
+
+ADD	setup_kdc.sh /setup_kdc.sh
+RUN chmod 740 /setup_kdc.sh
+ENTRYPOINT ["/setup_kdc.sh"]
